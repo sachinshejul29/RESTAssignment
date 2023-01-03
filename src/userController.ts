@@ -2,13 +2,19 @@ import { Request, Response, NextFunction } from "express";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 
-// const to store type of user
+// type to store fields of User
 type User = {
+  // type to id field
   id: string;
+  // type to store firstName field
   firstName: string;
+  // type to store lastName field
   lastName: string;
+  // type to store email field
   email: string;
+  // type to store mobile field
   mobile: string;
+  // type to store city field
   city: string;
 };
 

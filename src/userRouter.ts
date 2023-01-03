@@ -4,22 +4,22 @@ import userController from "./userController";
 // const to store routing object
 const router = express.Router();
 
-// GET feed/users
+// setting up the get/fetch request for all data
 router.get("/users", userController.getUsers);
 
-// POST feed/user
+// setting up the post/write request
 router.post("/user", userController.createUser);
 
-// GET feed/user/userId
+// setting up the get/fetch request for particular ID
 router.get("/user/:userId", userController.getUser);
 
-// PUT feed/user/:userId
+// setting up the put/update request for particular ID
 router.put("/user/:userId", userController.updateUser);
 
-// DELETE feed/user/:userId
+// setting up the delete request for particular ID
 router.delete("/user/:userId", userController.deleteUser);
 
-// DELETE feed/users/deleteAll
+// setting up the delete request for all data
 router.delete("/users/deleteAll", userController.deleteAllUsers);
 
 export = router;
