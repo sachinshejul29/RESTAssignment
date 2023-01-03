@@ -22,4 +22,4 @@ router.delete("/user/:userId", userController.deleteUser);
 // setting up the delete request for all data
 router.delete("/users/deleteAll", userController.deleteAllUsers);
 
-export = router;
+export default router;
