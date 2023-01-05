@@ -30,35 +30,42 @@ userDB.defaults({ users: [] }).write();
 const getUsers = (req: Request, res: Response, next: NextFunction) => {
   // const to store all users data
   const users = userDB.get("users").value();
-
+  res.status(200);
   if (users.length === 0) {
-    res.status(200);
     res.send("No data available");
   } else {
-    res.status(200);
     res.send(users);
   }
 };
 
 // function to create new user
-const createUser = (req: Request, res: Response, next: NextFunction) => {
+const createUser = (
+  req: Request<any, any, User, any>,
+  res: Response,
+  next: NextFunction
+) => {
+  // destructuring of request body field
+  const { firstName, lastName, email, mobile, city } = req.body;
   // const to store data of new user
   const userToCreate = {
     id: new Date().toISOString(),
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    mobile: req.body.mobile,
-    city: req.body.city,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    mobile: mobile,
+    city: city,
   };
 
-  userDB.get("users").value().push(userToCreate);
-  userDB.write();
-  res.send(userToCreate);
+  userDB.get("users").push(userToCreate).write();
+  res.status(201).send(userToCreate);
 };
 
 // function to fetch user data using id
-const getUser = (req: Request, res: Response, next: NextFunction) => {
+const getUser = (
+  req: Request<any, any, User, any>,
+  res: Response,
+  next: NextFunction
+) => {
   // const to store entered id
   const idToFetch = req.params.userId;
   // const to store user data to display
@@ -72,11 +79,17 @@ const getUser = (req: Request, res: Response, next: NextFunction) => {
       res.json("User with entered ID not found");
     }
   }
-  res.send(userToDisplay);
+  res.status(200).send(userToDisplay);
 };
 
 // function to update user data using id
-const updateUser = (req: Request, res: Response, next: NextFunction) => {
+const updateUser = (
+  req: Request<any, any, User, any>,
+  res: Response,
+  next: NextFunction
+) => {
+  // destructuring of request body field
+  const { firstName, lastName, email, mobile, city } = req.body;
   // const to store entered id
   const idToUpdate = req.params.userId;
   // const to store user data to update
@@ -91,18 +104,22 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
     }
   }
 
-  userToUpdate.firstName = req.body.firstName || userToUpdate.firstName;
-  userToUpdate.lastName = req.body.lastName || userToUpdate.lastName;
-  userToUpdate.email = req.body.email || userToUpdate.email;
-  userToUpdate.mobile = req.body.mobile || userToUpdate.mobile;
-  userToUpdate.city = req.body.city || userToUpdate.city;
+  userToUpdate.firstName = firstName || userToUpdate.firstName;
+  userToUpdate.lastName = lastName || userToUpdate.lastName;
+  userToUpdate.email = email || userToUpdate.email;
+  userToUpdate.mobile = mobile || userToUpdate.mobile;
+  userToUpdate.city = city || userToUpdate.city;
 
   userDB.update("users", (userToUpdate) => userToUpdate).write();
   res.status(200).json("User successfully updated");
 };
 
 // function to delete user data using id
-const deleteUser = (req: Request, res: Response, next: NextFunction) => {
+const deleteUser = (
+  req: Request<any, any, User, any>,
+  res: Response,
+  next: NextFunction
+) => {
   // const to store entered id
   const idToDelete = req.params.userId;
   // const to store user data to delete
@@ -121,16 +138,19 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // function to delete all users data
-const deleteAllUsers = (req: Request, res: Response, next: NextFunction) => {
+const deleteAllUsers = (
+  req: Request<any, any, User, any>,
+  res: Response,
+  next: NextFunction
+) => {
   // const to store all users data
   const usersData = userDB.get("users").value();
-
+  res.status(200);
   if (usersData.length === 0) {
-    res.status(200);
     res.send("No data available");
   } else {
     userDB.set("users", []).write();
-    res.status(200).json("Successfully deleted all data");
+    res.json("Successfully deleted all data");
   }
 };
 
